@@ -1,87 +1,49 @@
-# RSM Optimization of Soap Production from *Balanites aegyptiaca* Seed Oil
+# Response Surface Methodology for Soap Production from *Balanites aegyptiaca* Seed Oil
 
-A Python re-implementation of the Response Surface Methodology (RSM) and
-Design of Experiments (DoE) approach used in my undergraduate thesis,
-where I optimized soap production from a non-edible, locally sourced
-desert date seed oil.
+**Research-methods demonstration | Python | Design of Experiments | Chemical Engineering**
 
-## Background
+This repository illustrates how a quadratic response surface can be fitted and optimized in Python. It is inspired by my 2025 undergraduate thesis on soap production from *Balanites aegyptiaca* (desert date) seed oil at Modibbo Adama University, Yola, Nigeria.
 
-My thesis investigated *Balanites aegyptiaca* seed oil as a sustainable,
-non-edible feedstock for soap production, using Design-Expert software to
-apply DoE/RSM and develop a statistically validated predictive model
-(p < 0.05) linking three process variables to soap yield.
+## Research context
 
-This project rebuilds that same statistical methodology from first
-principles in Python, without relying on commercial DoE software, to
-demonstrate the underlying statistics and make the method fully
-reproducible and inspectable.
+The undergraduate study investigated a locally available non-edible oil feedstock and applied Design of Experiments (DoE), Central Composite Design (CCD), and Response Surface Methodology (RSM) to investigate process conditions. The thesis used Design-Expert for its original experimental analysis.
 
-## ⚠️ Data note (read this first)
+**Research-integrity note:** The data in this GitHub script are **representative/synthetic demonstration data**, not the thesis's original measured observations. Consequently, numerical predictions from the script must not be cited as experimental findings or as independent validation of the thesis. The repository demonstrates the *method*, not reproduction of the original dataset.
 
-The original thesis data was recorded in Design-Expert during laboratory
-work and is not reproduced here. The dataset in this repository is a
-**representative Central Composite Design (CCD)** built to reproduce the
-same kind of curvature and interior optimum reported in the thesis — it
-is a **methodology demonstration**, not a republication of the original
-experimental results. Anyone wanting to verify the literal thesis values
-should refer to the thesis manuscript itself.
+## What the code demonstrates
 
-The pipeline is written so that swapping in a real dataset (same column
-structure) reproduces the full analysis unchanged — see
-`rsm_soap_optimization.py`, the clearly marked data-generation section.
+- Constructing a three-factor CCD with NumPy
+- Fitting a quadratic model with scikit-learn
+- Computing model coefficient statistics
+- Optimizing the fitted response using SciPy
+- Plotting response surfaces and contour maps
 
-## Method
-
-1. **Design construction** — a face-centered Central Composite Design
-   (3 factors, 8 factorial points, 6 axial points, 6 center-point
-   replicates) built manually with NumPy, covering:
-   - Reaction Temperature: 50–80 °C
-   - NaOH Concentration: 10–20%
-   - Reaction Time: 30–90 minutes
-2. **Model fitting** — a full quadratic response surface model
-   (linear + quadratic + two-factor interaction terms) fitted with
-   scikit-learn's `PolynomialFeatures` + `LinearRegression`.
-3. **Statistical significance** — coefficient standard errors, t-statistics,
-   and p-values computed directly via OLS theory (no black-box library),
-   so every number in `outputs/model_coefficients.csv` can be traced back
-   to the underlying linear algebra.
-4. **Optimization** — `scipy.optimize.minimize` locates the stationary
-   point of the fitted surface to identify optimal process conditions.
-5. **Visualization** — 3D response surface and 2D contour plots showing
-   the predicted yield landscape and marking the optimum.
-
-## Results (on the representative dataset)
-
-- R² = 0.993, Adjusted R² = 0.986 — all linear, quadratic, and
-  interaction terms significant at p < 0.05, consistent with the
-  thesis's reported model significance
-- Predicted optimum: **74.7°C, 18.6% NaOH, 67 minutes → 79.3% predicted yield**
-
-See `outputs/model_summary.txt` and `outputs/response_surface_and_contour.png`
-for full results.
-
-## Repository structure
-
-```
-rsm_soap_optimization.py       # full analysis pipeline, single script
-outputs/
-  design_and_results.csv       # the CCD design matrix and responses
-  model_coefficients.csv       # fitted coefficients with p-values
-  model_summary.txt            # R², adjusted R², full coefficient table
-  optimum_conditions.txt       # predicted optimal process conditions
-  response_surface_and_contour.png
-README.md
-```
-
-## Running it yourself
+## Run locally
 
 ```bash
-pip install numpy pandas scikit-learn scipy matplotlib
+python -m pip install numpy pandas scikit-learn scipy matplotlib
 python rsm_soap_optimization.py
 ```
 
+The script generates its analysis outputs when run. Generated output files are **not currently committed** to this repository; see the script for paths and assumptions. Check model fit and optimization constraints before interpreting results.
+
+## Next research steps
+
+1. With appropriate permission, replace demonstration data with a properly documented, anonymized experimental dataset.
+2. Compare Python-derived statistics with the original Design-Expert analysis.
+3. Add reproducibility checks, unit tests, and a data dictionary.
+4. Document uncertainty and practical feasibility of any predicted optimum.
+
+## Related academic work
+
+- **2025 B.Eng. thesis:** Optimization of soap production from *Balanites aegyptiaca* seed oil using DoE/RSM.
+- **2025 process plant design:** Conceptual design of a 100-tonne/day sodium bicarbonate plant using a Solvay-process route.
+- **2019 diploma project:** Emulsion paint formulation using locally sourced materials.
+
+These are separate academic projects; their full reports and original datasets are not automatically published here.
+
 ## Author
 
-Abdullahi Mohammed — B.Eng. Chemical Engineering, Modibbo Adama University,
-Yola. [LinkedIn](https://www.linkedin.com/in/mohammed-abdullahi-a48a272a5)
+**Mohammed Abdullahi** — B.Eng. Chemical Engineering, Modibbo Adama University, Yola, Nigeria. Interested in process systems engineering, sustainable process design, statistical optimization and process simulation.
+
+[LinkedIn](https://www.linkedin.com/in/mohammed-abdullahi-a48a272a5) · [X](https://x.com/EngrTMSong)
