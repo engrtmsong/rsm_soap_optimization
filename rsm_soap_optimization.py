@@ -132,9 +132,7 @@ with open(str(OUTPUT_DIR / "model_summary.txt"), "w") as f:
     f.write("=" * 40 + "\n")
     f.write(f"R-squared:          {r2:.4f}\n")
     f.write(f"Adjusted R-squared: {adj_r2:.4f}\n")
-    f.write(f"Model p-value (overall F-test significance reflected in\n")
-    f.write(f"term-level p-values below; model is significant if key\n")
-    f.write(f"linear/quadratic terms have p < 0.05)\n\n")
+    f.write("Coefficient-level t-tests are shown below; no overall model F-test is computed.\\n\\n")
     f.write(coef_table.to_string(index=False))
 
 print("R-squared:", round(r2, 4), "| Adjusted R-squared:", round(adj_r2, 4))
