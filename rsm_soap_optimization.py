@@ -29,6 +29,11 @@ thesis data table and rerun - the rest of the pipeline works unchanged.
 Author: Abdullahi Mohammed
 """
 
+from pathlib import Path
+
+OUTPUT_DIR = Path(__file__).resolve().parent / 'outputs'
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import PolynomialFeatures
@@ -81,7 +86,7 @@ true_yield = (
 noise = np.random.normal(0, 0.6, size=len(df))
 df["Soap_Yield_percent"] = np.round(true_yield + noise, 2)
 
-df.to_csv("outputs/design_and_results.csv", index=False)
+df.to_csv(str(OUTPUT_DIR / "design_and_results.csv"), index=False)
 
 # ---------------------------------------------------------------
 # 3. FIT THE FULL QUADRATIC RSM MODEL
@@ -120,9 +125,9 @@ coef_table = pd.DataFrame({
     "p_value": p_values
 })
 coef_table["significant_at_0.05"] = coef_table["p_value"] < 0.05
-coef_table.to_csv("outputs/model_coefficients.csv", index=False)
+coef_table.to_csv(str(OUTPUT_DIR / "model_coefficients.csv"), index=False)
 
-with open("outputs/model_summary.txt", "w") as f:
+with open(str(OUTPUT_DIR / "model_summary.txt"), "w") as f:
     f.write("RSM QUADRATIC MODEL SUMMARY\n")
     f.write("=" * 40 + "\n")
     f.write(f"R-squared:          {r2:.4f}\n")
@@ -152,7 +157,7 @@ opt_real = {
     "Time_min":      round(coded_to_real(opt_coded[2], *time_range), 1),
     "Predicted_Yield_percent": round(opt_yield, 2)
 }
-with open("outputs/optimum_conditions.txt", "w") as f:
+with open(str(OUTPUT_DIR / "optimum_conditions.txt"), "w") as f:
     for k, v in opt_real.items():
         f.write(f"{k}: {v}\n")
 
@@ -192,5 +197,5 @@ ax2.legend()
 fig.colorbar(cont, ax=ax2, label="Yield (%)")
 
 plt.tight_layout()
-plt.savefig("outputs/response_surface_and_contour.png", dpi=150)
+plt.savefig(str(OUTPUT_DIR / "response_surface_and_contour.png"), dpi=150)
 print("\nPlots saved to outputs/response_surface_and_contour.png")
